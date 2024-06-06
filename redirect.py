@@ -1,12 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from starlette.responses import RedirectResponse
 
 app = FastAPI()
 
-URLS = {
-    "google": "https://google.com"
-}
+URLS = {}
 
-@app.get("/")
-async def redirect():
-    return RedirectResponse(URLS["google"])
+@app.post("/{alias}")
+async def create_alias_link(alias: str):
+    URLS[alias] = "https://" + alias + ".com"
+    return "Ok"
+
+@app.get("/{alias}")
+async def get_alias_link_redirect(alias: str):
+    if alias in URLS.keys():
+        return RedirectResponse(URLS[alias])
+    raise HTTPException
