@@ -7,6 +7,6 @@ URLS = {
     "google": "https://google.com"
 }
 
-@app.get("")
+@app.get("/")
 async def redirect():
     return RedirectResponse(URLS["google"])
